@@ -1,40 +1,86 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<title>COP 4331 LAMP Stack Demo</title>
-	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-	
-	<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() 
-	{
-		readCookie();
-	}, false);
-	</script>
-	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/home.css">
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/code.js"></script>  
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+             readCookie();
+         }, false);
+    </script> 
 </head>
+
 <body>
-
-<h1 id="title">COP 4331 LAMP Stack Demo</h1>
-
-<div id="loggedInDiv">
-	<span id="userName"></span><br />
-	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+        <div class="container">
+            <div id="loggedInDiv">
+                <span id="userName"></span><br />
+            </div>
+        </div>
+    <!-- Search Bar at the Top of the Page -->
+    <div class="search-container">
+    
+      <input type="text" id="searchText" placeholder="Contact To Search For"/>
+    	<button type="button" id="searchButton" class="buttons" onclick="searchContacts();"></button><br />
+    	<span id="contactSearchResult"></span>
+    	<p id="contactList">
+        <!--<input type="text" id="searchText" name="searchText" placeholder="Search contacts..." />
+        <button type="button" onclick="searchContacts();" >Search Contact</button>-->
+    </form>
 </div>
 
-<div id="accessUIDiv">
-	<br />
 
-	<input type="text" id="searchText" placeholder="Color To Search For"/>
-	<button type="button" id="searchColorButton" class="buttons" onclick="searchColor();"> Search Color </button><br />
-	<span id="colorSearchResult"></span>
-	<p id="colorList">
-	</p><br /><br />
-
-	<input type="text" id="colorText" placeholder="Color To Add">
-	<button type="button" id="addColorButton" class="buttons" onclick="addColor();"> Add Color </button><br />
-	<span id="colorAddResult"></span>
-</div>
-
+    <main>
+        <div class="sidebar">
+            <img src="./images/logo.png" alt="waveLogo" id="waveLogo">
+            <h1>ContactWave</h1>
+            <a href="./home.html" class="menu">
+                <div class="menuItem">
+                    <img src="images/home.svg" alt="homeLogo" id="homeLogo">
+                    <p>Home</p>
+                </div>
+            </a>
+             <a href="./newcontact.html" class="menu">
+                <div class="menuItem">
+                    <p>Add Contact</p>
+                </div>
+            </a>
+            <button type="button" id="logoutButton" class="buttons" onclick="doLogout();">Log Out</button>
+        </div>
+        <div class="contactTable">
+          <table id="contactTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th></th>
+                </tr>
+            </thead>
+          
+            <tbody id="contactTableBody">
+          
+        </table>
+    </div>
+        
+        <div class="overlay" id="popupOverlay">
+            <div class="modal">
+                <p>Do you want to proceed?</p>
+                <div class="button-container">
+                    <button onclick="handleYes()">Yes</button>
+                    <button onclick="handleNo()">No</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+      window.onload = onloadSearch();
+    </script>
 </body>
+
 </html>

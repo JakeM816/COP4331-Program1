@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/login.css">
+    <script type = "text/javascript" src = "js/md5.js"></script>
+    <script type = "text/javascript" src = "js/code.js"></script>
+    <title>Login - ContactWave</title>
+
+</head>
+<body>
+    <div class="container">
+        <header>
+        </header>
+        <main>
+            <h1>If you are registered, please log in.</h1>
+            <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="loginName" placeholder="Username" /><br />
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="username">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Password" /><br />
+                    </div>    
+                    <button type="button" id ="loginButton" class="buttons" onclick="doLogin();">Log in</button>
+                    <span id="loginResult"></span>            
+            </form>
+
+        </main>
+    </div>
+    <footer>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

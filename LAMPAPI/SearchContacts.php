@@ -19,7 +19,7 @@
 		
 		$result = $stmt->get_result();
 		
-		while($row = $result->fetch_assoc())
+		while(($row = $result->fetch_assoc()) && $searchCount < 15)
 		{
 			if( $searchCount > 0 )
 			{
@@ -27,7 +27,7 @@
 			}
 			$searchCount++;
 			//$searchResults .= '"' . $row["FirstName"] . '"';
-      $searchResults .= '{"FirstName" : "'.$row["FirstName"].'", "LastName" : "'.$row["LastName"].'", "Phone" : "'.$row["Phone"].'", "Email" : "'.$row["Email"].'"}';
+      $searchResults .= '{"ID" : "'.$row["ID"].'", "FirstName" : "'.$row["FirstName"].'", "LastName" : "'.$row["LastName"].'", "Phone" : "'.$row["Phone"].'", "Email" : "'.$row["Email"].'"}';
 		}
 		
 		if( $searchCount == 0 )

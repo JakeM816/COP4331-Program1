@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/home.css">
+    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/code.js"></script>  
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            readCookie();
+        }, false);
+    </script>
+</head>
+
+<body>
+    <!-- Search Bar at the Top of the Page -->
+    <div class="search-container">
+    <form action="SearchContacts.php" method="get">
+        <input type="text" name="query" id="searchText" placeholder="Search contacts..." />
+        <button type="submit">Search Contact</button>
+    </form>
+</div>
+<div class="contactTable">
+    <table id="contactTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody id="contactTableBody">
+            <!-- Table rows will be dynamically added here based on search results -->
+        </tbody>
+    </table>
+</div>
+
+    <main>
+        <div class="sidebar">
+            <img src="./images/logo.png" alt="waveLogo" id="waveLogo">
+            <h1>ContactWave</h1>
+            <a href="./home.html" class="menu">
+                <div class="menuItem">
+                    <img src="images/home.svg" alt="homeLogo" id="homeLogo">
+                    <p>Home</p>
+                </div>
+            </a>
+            <button type="button" id="logoutButton" class="buttons" onclick="doLogout();">Log Out</button>
+        </div>
+
+        <div class="container">
+            <div id="loggedInDiv">
+                <span id="userName"></span><br />
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,9 +1,16 @@
 const urlBase = 'http://4jnamesandadream.com/LAMPAPI';
 const extension = 'php';
+const ids = [];
 
 let userId = 0;
 let firstName = "";
 let lastName = "";
+
+let contFirstName = "";
+let contLastName = "";
+let contPhone = "";
+let contEmail = "";
+let contId = -1;
 
 function doLogin()
 {
@@ -34,6 +41,8 @@ function doLogin()
 			{
 				let jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
+        localStorage.setItem('USERID',jsonObject.id); 
+
 		
 				if( userId < 1 )
 				{		
@@ -46,7 +55,7 @@ function doLogin()
 
 				saveCookie();
 	
-				window.location.href = "color.html";
+				window.location.href = "home.html";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -153,9 +162,12 @@ function readCookie()
 	}
 	else
 	{
-		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+		document.getElementById("userName").innerHTML = "Hello, " + firstName + " " + lastName;
+
 	}
 }
+
+
 
 function doLogout()
 {
@@ -197,17 +209,22 @@ function addColor()
 	
 }
 
-function searchColor()
-{
-	let srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	let colorList = "";
 
-	let tmp = {search:srch,userId:userId};
+
+function addContact()
+{
+	let newFirstName = document.getElementById("firstName").value;
+	let newLastName = document.getElementById("lastName").value;
+	let newEmail = document.getElementById("email").value;
+	let newPhone = document.getElementById("phone").value;
+  let addUserID = localStorage.getItem('USERID');
+  
+	document.getElementById("contactAddResult").innerHTML = "";
+  
+	let tmp = {firstName:newFirstName, lastName:newLastName, phone:newPhone, email:newEmail, userId:addUserID};
 	let jsonPayload = JSON.stringify( tmp );
 
-	let url = urlBase + '/SearchColors.' + extension;
+	let url = urlBase + '/AddContact.' + extension;
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -218,15 +235,94 @@ function searchColor()
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
+				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+    window.location.href = "home.html";
+	}
+	catch(err)
+	{
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
+	
+}
+
+function deleteContact()
+{
+	let oldContact = localStorage.getItem('ContactID');
+  console.log("WORKING: " + oldContact);
+	document.getElementById("contactUpdateDeleteResult").innerHTML = "";
+
+	let tmp = {id:oldContact};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/DeleteContact.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("contactUpdateDeleteResult").innerHTML = "Contact has been deleted";
+			}
+		};
+		xhr.send(jsonPayload);
+    window.location.href = "home.html";
+	}
+	catch(err)
+	{
+		document.getElementById("contactUpdateDeleteResult").innerHTML = err.message;
+	}
+	
+}
+
+function onloadSearch(){
+  userId = localStorage.getItem("USERID");
+  searchContacts();
+}
+
+function searchContacts()
+{
+  console.log("js");
+	let srch = document.getElementById("searchText").value;
+	document.getElementById("searchText").innerHTML = "";
+	
+	let colorList = "";
+	let tmp = {search:srch,userId:userId};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/SearchContacts.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("searchText").innerHTML = "Contact(s) has been retrieved";
 				let jsonObject = JSON.parse( xhr.responseText );
-				
+        //BODY OF TABLE 
+				const tableBody = document.getElementById('contactTableBody');
+        //CLEAR TABLE FOR EACH SEARCH
+	      tableBody.innerHTML = ' ';
+             
 				for( let i=0; i<jsonObject.results.length; i++ )
 				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
+          ids[i] = jsonObject.results[i].ID;
+					contactList += jsonObject.results[i];
+					if( i <= jsonObject.results.length - 1 )
 					{
-						colorList += "<br />\r\n";
+           //POPULATE TABLE
+						populateTable(tableBody, jsonObject.results[i], i);
+						contactList += "<br />\r\n";
 					}
 				}
 				
@@ -239,5 +335,144 @@ function searchColor()
 	{
 		document.getElementById("colorSearchResult").innerHTML = err.message;
 	}
+}
+function openPopup(index) {
+	//document.getElementById('popupOverlay').style.display = 'flex';
+   console.log(index);
+   saveContactInfo(index);
+   window.location.href = "contact.html";
+   populateContactInfo();
+}
+function closePopup() {
+	document.getElementById('popupOverlay').style.display = 'none';
+}
+function handleYes() {
+	alert('You clicked Yes!');
+	closePopup();
+}
+
+function handleNo() {
+	alert('You clicked No!');
+	closePopup();
+}
+
+function addButtonToCell(cellId) {
+     const buttonCell = document.getElementById(cellId);
+     const button = document.createElement('button');
+     button.textContent = 'Click me';
+     button.classList.add('action-button');
+     button.addEventListener('click', function () {
+        buttonClickHandler(this);
+     });
+     buttonCell.appendChild(button);
+}
+
+function populateTable(tableBody, resultsArray, index)
+{
+  const row = tableBody.insertRow();
+  const cellFirstName = row.insertCell(0);
+  const cellLastName = row.insertCell(1);
+  const cellEmail = row.insertCell(2);
+  const cellPhone = row.insertCell(3);
+  //const cellButton = row.insertCell(4);
+
+  
+  
+  cellFirstName.textContent = resultsArray.FirstName
+  cellLastName.textContent = resultsArray.LastName;
+  cellEmail.textContent = resultsArray.Email;
+  cellPhone.textContent = resultsArray.Phone;
+  //cellButton.innerHTML = '<button onclick="openPopup()">hello</button>';
+  row.classList.add('clickable-row');
+  row.addEventListener('click', function(){
+    openPopup(index);
+  });
+
+}
+ 
+function saveContactInfo(index){
+  const tableBody = document.getElementById('contactTableBody');
+  curRow = tableBody.rows[index];
+  contFirstName = curRow.cells[0].textContent;
+  console.log(curRow.cells[0].textContent);
+  localStorage.setItem('FirstName', curRow.cells[0].textContent); 
+  
+  contLastName = curRow.cells[1].textContent;
+  console.log(curRow.cells[1].textContent);
+  localStorage.setItem('LastName', curRow.cells[1].textContent); 
+  
+  contLastName = curRow.cells[2].textContent;
+  console.log(curRow.cells[2].textContent);
+  localStorage.setItem('Email', curRow.cells[2].textContent); 
+  
+  contLastName = curRow.cells[3].textContent;
+  console.log(curRow.cells[3].textContent);
+  localStorage.setItem('PhoneNum', curRow.cells[3].textContent); 
+  
+  localStorage.setItem('ContactID', ids[index]);
+  contId = ids[index];
+  console.log(ids[index]);
+}
+
+function populateContactInfo() { 
+  //var urlParams = new URLSearchParams(window.location.search);
+  //var data = urlParams.get('data');
+  console.log(localStorage.getItem('FirstName'));
+  var fName = document.getElementById('firstName');
+  fName.value = localStorage.getItem('FirstName');
+  
+  var lName = document.getElementById('lastName');
+  lName.value = localStorage.getItem('LastName');
+  
+  var email = document.getElementById('email');
+  email.value = localStorage.getItem('Email');
+  
+  var phne = document.getElementById('phone');
+  phne.value = localStorage.getItem('PhoneNum');
+  console.log("HERE : " + localStorage.getItem('ContactID'));
+
+}
+
+function updateContact(index)
+{
+  let updateFirstName = document.getElementById("firstName").value;
+	let updateLastName = document.getElementById("lastName").value;
+	let updateEmail = document.getElementById("email").value;
+	let updatePhone = document.getElementById("phone").value;
+  let idNum = localStorage.getItem('ContactID');
+	//document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {firstName:updateFirstName, lastName:updateLastName, phone:updatePhone, email:updateEmail, id:idNum};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/UpdateContact.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				//document.getElementById("contactAddResult").innerHTML = "Color has been added";
+        console.log("Redirecting...");
+			}
+		};
+	 xhr.send(jsonPayload);
+   window.location.href = "home.html";
+	}
+	catch(err)
+	{
+		//document.getElementById("colorAddResult").innerHTML = err.message;
+   console.log(err.message);
+	}
 	
 }
+
+function saveChanges(){
+  updateContact();
+}
+
+
