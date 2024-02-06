@@ -97,8 +97,7 @@ function doRegister(){
         
 				let jsonObject = JSON.parse( xhr.responseText );
 				userId = jsonObject.id;
-		
-        //Register response check??????????
+		    localStorage.setItem('USERID',jsonObject.id);
 		    
             
 				firstName = jsonObject.firstName;

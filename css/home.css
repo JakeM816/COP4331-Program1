@@ -115,7 +115,7 @@ h2{
     text-align: center; 
     background-color: #0056b3;
     border-radius: 4px;
-
+    margin-bottom: 10px;
 }
 
 
@@ -173,6 +173,7 @@ button:hover {
     display: flex;
     position: relative;
     left: 220px;
+    width:1000px;
 }
 
 
@@ -219,4 +220,17 @@ button:hover {
 
 .search-container button:hover {
     background-color: #0056b3;
+}
+
+#contactTitle{
+  position: relative;
+  left:-200px;
+}
+
+#homeButton{
+  margin-left:15px;
+}
+
+#contactButton{
+  margin-left: 5px;
 }

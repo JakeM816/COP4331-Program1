@@ -6,68 +6,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/home.css">
     <script type="text/javascript" src="js/md5.js"></script>
-    <script type="text/javascript" src="js/code.js"></script>  
+    <script type="text/javascript" src="js/code.js"></script>
 
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-             readCookie();
-         }, false);
-    </script> 
+        document.addEventListener("DOMContentLoaded", function () {
+            readCookie();
+        }, false);
+    </script>
 </head>
 
 <body>
-        <div class="container">
-            <div id="loggedInDiv">
-                <span id="userName"></span><br />
-            </div>
+    <div class="container">
+        <div id="loggedInDiv">
+            <span id="userName"></span><br />
         </div>
+    </div>
     <!-- Search Bar at the Top of the Page -->
-    <div class="search-container">
-    
-      <input type="text" id="searchText" placeholder="Contact To Search For"/>
-    	<button type="button" id="searchButton" class="buttons" onclick="searchContacts();"></button><br />
-    	<span id="contactSearchResult"></span>
-    	<p id="contactList">
-        <!--<input type="text" id="searchText" name="searchText" placeholder="Search contacts..." />
+                <div class="search-container">
+                    <input type="text" id="searchText" placeholder="Contact To Search For" />
+                    <button type="button" id="searchButton" class="buttons" onclick="searchContacts();"></button><br />
+                    <span id="contactSearchResult"></span>
+                    <p id="contactList">
+                        <!--<input type="text" id="searchText" name="searchText" placeholder="Search contacts..." />
         <button type="button" onclick="searchContacts();" >Search Contact</button>-->
-    </form>
-</div>
-
-
+                        </form>
+                
+            </div>
     <main>
         <div class="sidebar">
-            <img src="./images/logo.png" alt="waveLogo" id="waveLogo">
+            <img src="./images/newLogo.png" alt="waveLogo" id="waveLogo">
             <h1>ContactWave</h1>
             <a href="./home.html" class="menu">
                 <div class="menuItem">
                     <img src="images/home.svg" alt="homeLogo" id="homeLogo">
-                    <p>Home</p>
+                    <p id="homeButton">Home</p>
                 </div>
             </a>
-             <a href="./newcontact.html" class="menu">
+            <a href="./newcontact.html" class="menu">
                 <div class="menuItem">
-                    <p>Add Contact</p>
+                    <p id="contactButton">Add Contact</p>
                 </div>
             </a>
             <button type="button" id="logoutButton" class="buttons" onclick="doLogout();">Log Out</button>
         </div>
         <div class="contactTable">
-          <table id="contactTable">
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th></th>
-                </tr>
-            </thead>
-          
-            <tbody id="contactTableBody">
-          
-        </table>
-    </div>
-        
+            
+                <h2 id="contactTitle">Contacts</h2>
+                
+            <table id="contactTable">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="contactTableBody">
+
+            </table>
+        </div>
+
         <div class="overlay" id="popupOverlay">
             <div class="modal">
                 <p>Do you want to proceed?</p>
@@ -79,7 +80,7 @@
         </div>
     </main>
     <script>
-      window.onload = onloadSearch();
+        window.onload = onloadSearch();
     </script>
 </body>
 

@@ -97,6 +97,7 @@ footer{
 
 .menu {
     display: flex;
+    align-items: center;
     flex-direction: column;
     font-family: Montserrat, sans-serif;
     font-weight: bold;
@@ -112,18 +113,23 @@ footer{
 .menuItem {
     padding: 1em;
     display: flex;
-    width: 60px;
+    width: 65px;
     cursor: pointer;
     font-size: 15px;
     transition: background 0.35s;
     text-align: center; 
     background-color: #0056b3;
     border-radius: 4px;
+    margin-right: auto;
 
 }
+
+
+
 .menuItem:hover {
     background-color: #002d5d;    
     border-radius: 4px;
     cursor: pointer;
     color: white;
+
 }
